@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const DashBoardScreen()));
     } else {
+      print(response.body);
       Fluttertoast.showToast(
         msg: "Invalid Credentials",
         toastLength: Toast.LENGTH_SHORT,
@@ -103,7 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                     MyElvtdBtn(
                       onPressed: () {
                         authentication();
-                        // print(Text("$userController"));
+                        print(Text("${userController.text}"));
+                        print(Text("${passwordController.text}"));
                       },
                       text: "Login",
                     )

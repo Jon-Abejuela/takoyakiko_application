@@ -48,6 +48,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       } else {
         print("Error fetching: ${response.statusCode}");
       }
+      print("Response Body: ${response.body}");
     } catch (e) {
       print("Error: $e");
     }

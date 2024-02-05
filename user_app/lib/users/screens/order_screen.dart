@@ -14,17 +14,17 @@ class OrderProduct {
   final int productId;
   final String productName;
   final String productQuantity;
-  final String total_price;
+  final String? total_price;
   final String? status;
-  final String image; // Added image field
+  final String image;
 
   OrderProduct({
     required this.orderId,
     required this.productId,
     required this.productName,
     required this.productQuantity,
-    required this.total_price,
-    required this.status,
+    this.total_price,
+    this.status,
     required this.image,
   });
 }
@@ -57,17 +57,18 @@ class _OrderScreenState extends State<OrderScreen> {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
+        print(data);
 
         setState(() {
           orderData = data.map((item) {
             return OrderProduct(
-              orderId: item['orders_id'],
+              orderId: item['order_id'],
               productId: item['product_id'],
               productName: item['product_name'],
               productQuantity: item['quantity'].toString(),
-              total_price: item['total_price'].toString(),
-              status: item['status'],
-              image: item['image'] ?? '', // Added image field
+              total_price: item['total_price']?.toString(),
+              status: item['status']?.toString(),
+              image: item['image'] ?? '',
             );
           }).toList();
         });
@@ -86,21 +87,23 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Widget showImage(String imageData) {
-    try {
-      Uint8List decodedBytes = base64.decode(imageData);
-      return Image.memory(
-        decodedBytes,
-        width: 50,
-        height: 100,
-        fit: BoxFit.cover,
-      );
-    } catch (e) {
-      print('Error decoding image data: $e');
-      return const Icon(
-        Icons.error,
-        color: Colors.red, // You can customize the error icon color
-      );
+    if (imageData.isNotEmpty) {
+      try {
+        Uint8List decodedBytes = base64.decode(imageData);
+        return Image.memory(
+          decodedBytes,
+          width: 50,
+          height: 100,
+          fit: BoxFit.cover,
+        );
+      } catch (e) {
+        print('Error decoding image data: $e');
+      }
     }
+    return const Icon(
+      Icons.error,
+      color: Colors.red,
+    );
   }
 
   @override
@@ -143,9 +146,9 @@ class _OrderScreenState extends State<OrderScreen> {
                         const SizedBox(width: 10),
                         Flexible(
                           child: Semantics(
-                            label: 'Total Price: ${orderProduct.total_price}',
+                            label: 'Total Price: ${orderProduct.total_price ?? 'N/A'}',
                             child: Text(
-                              '₱ ${orderProduct.total_price}',
+                              '₱ ${orderProduct.total_price ?? 'N/A'}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),

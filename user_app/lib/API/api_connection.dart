@@ -1,5 +1,5 @@
 class API {
-  static const hostConnect = "http://192.168.18.24/api_takoyakiko_app";
+  static const hostConnect = "http://192.168.18.24/app_takoyakiko_api/takoyakiko_backend/api_takoyakiko_app";
   static const hostConnectUser = "$hostConnect/user";
 
   static const loginConn = "$hostConnectUser/login.php";
